@@ -172,6 +172,7 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
+	_salam\
 	_myproc\
 
 fs.img: mkfs README $(UPROGS)
