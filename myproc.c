@@ -10,5 +10,5 @@ void myproc(){
 		printf(1,"%d",i);
 		i++;
 	}
-	
+	// im am mahdi
 }
