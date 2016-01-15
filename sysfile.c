@@ -440,3 +440,47 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+int sys_writeproc(){
+ 
+int fd; 
+fd = sys_open();    
+if(fd >= 0) {        
+	cprintf("ok: create file succeed\n");    
+} else {       
+ cprintf("error: create file failed\n");        
+return -1;   
+}     
+struct file *f = proc->ofile[fd];   
+if(filewrite(f, (char *)proc, sizeof(struct proc) )!= sizeof(struct proc)){        
+cprintf("failed\n");        
+return -1; 
+}    
+proc->ofile[fd] = 0;
+    fileclose(f);
+    return 0;
+}
+
+int sys_readproc(){
+	int fd; 
+   
+fd = sys_open();    
+if(fd >= 0) {        
+cprintf("ok: read file succeed\n");    
+} else {        
+cprintf("error: read file failed\n");        
+return -1;    
+}    
+struct file *f=proc->ofile[fd];
+struct proc p;
+if(fileread(f, (char *)&p, sizeof(struct proc)) != sizeof(struct proc))
+{      
+cprintf("failed read\n");
+return -1;
+}   
+cprintf("read ok. %s\n",p.name);    
+proc->ofile[fd] = 0;
+    fileclose(f);
+
+    return 0;
+}

@@ -464,3 +464,7 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+void* getproc(){
+	return proc;
+}	
