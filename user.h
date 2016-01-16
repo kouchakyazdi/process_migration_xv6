@@ -26,6 +26,8 @@ int uptime(void);
 int hello();
 int readproc();
 int writeproc();
+int writepid(void*);
+
 
 // ulib.c
 int stat(char*, struct stat*);

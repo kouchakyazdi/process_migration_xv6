@@ -101,6 +101,8 @@ extern int sys_uptime(void);
 extern int sys_hello(void);
 extern int sys_readproc(void);
 extern int sys_writeproc(void);
+extern int sys_writepid(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -127,6 +129,8 @@ static int (*syscalls[])(void) = {
 [SYS_hello]   sys_hello,
 [SYS_readproc]   sys_readproc,
 [SYS_writeproc]   sys_writeproc,
+[SYS_writepid]   sys_writepid,
+
 };
 
 void

@@ -32,3 +32,5 @@ SYSCALL(uptime)
 SYSCALL(hello)
 SYSCALL(readproc)
 SYSCALL(writeproc)
+SYSCALL(writepid)
+

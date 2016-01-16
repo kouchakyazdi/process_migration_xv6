@@ -13,6 +13,7 @@
 #include "fs.h"
 #include "file.h"
 #include "fcntl.h"
+#include "syscall.h"
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -440,9 +441,18 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+/////////////////////////////
+int sys_writepid(struct proc* p);
+struct proc* getter(int pid);
+int cproc(){
+
+return sys_writepid(proc);
+}
 
 int sys_writeproc(){
- 
+struct proc* p=getter(proc->pid);
+ cprintf("\npiddd: %d\n" , p->pid);
+cprintf(" %s" , p->name);
 int fd; 
 fd = sys_open();    
 if(fd >= 0) {        
@@ -451,19 +461,24 @@ if(fd >= 0) {
  cprintf("error: create file failed\n");        
 return -1;   
 }     
-struct file *f = proc->ofile[fd];   
-if(filewrite(f, (char *)proc, sizeof(struct proc) )!= sizeof(struct proc)){        
+struct file *f = p->ofile[fd];   
+cprintf("\nsize : %d , %d",sizeof(p),sizeof(struct proc));
+if(filewrite(f, (char *)p, sizeof(struct proc) )!= sizeof(struct proc)){        
 cprintf("failed\n");        
 return -1; 
 }    
-proc->ofile[fd] = 0;
+//filewrite(f, (char *)p, sizeof(struct proc) );
+p->ofile[fd] = 0;
     fileclose(f);
+//kill(p->pid);
     return 0;
 }
 
 int sys_readproc(){
 	int fd; 
-   
+int css;
+   css=kill(proc->pid);
+cprintf("\nstatus :%d\n",css);
 fd = sys_open();    
 if(fd >= 0) {        
 cprintf("ok: read file succeed\n");    
@@ -481,6 +496,9 @@ return -1;
 cprintf("read ok. %s\n",p.name);    
 proc->ofile[fd] = 0;
     fileclose(f);
-
+sys_writepid(&p);
     return 0;
 }
+
+
+

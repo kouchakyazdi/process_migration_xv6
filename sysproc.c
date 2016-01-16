@@ -6,7 +6,10 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-//#include "user.h"
+#include "stat.h"
+#include "fs.h"
+#include "file.h"
+#include "fcntl.h"
 
 int
 sys_fork(void)
@@ -93,6 +96,7 @@ sys_uptime(void)
 
 int sys_hello(){
 	int c=55;
+
 return c;
 }
 

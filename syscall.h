@@ -24,3 +24,5 @@
 #define SYS_hello  23
 #define SYS_readproc  24
 #define SYS_writeproc  25
+#define SYS_writepid  26
+#define SYS_of  27

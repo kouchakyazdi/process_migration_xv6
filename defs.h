@@ -119,6 +119,8 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 void*		getproc();
+int 		writepid(void*);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -186,6 +188,7 @@ int		hello();
 //sysfile.c
 int 		readproc();
 int 		writeproc();
+//int 		writepid();
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

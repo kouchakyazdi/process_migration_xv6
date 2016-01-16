@@ -10,14 +10,35 @@
 #include "fcntl.h"
 
 void myproc(){
-	int i=0;
-	while(i<2){
-		sleep(100);
-		printf(1,"%d",i);
-		i++;
-	}
 
-	printf(1,"\n%d\n",writeproc("tmp",O_CREATE|O_RDWR));
-	printf(1,"%d\n",readproc("tmp",O_RDONLY));
+	//printf(1,"\n%d\n",writeproc("tmp",O_CREATE|O_RDWR));
+	
+	
+		   
+			int i=0;
+			while(i<2){
+				sleep(100);
+				printf(1,"%d",i);
+				i++;
+			}
+			
+
+		//sleep(400);
+writeproc("tmp",O_CREATE|O_RDWR);
+			
+			
+
+readproc("tmp",O_RDONLY);	
+			
+		
+	    while(1){
+				sleep(100);
+				printf(1,"%d",i);
+				i++;
+			}
+	    
+
+	//readproc("tmp",O_RDONLY);
+printf(1,"\n quitting!!!!!!\n");
 	exit();
 }

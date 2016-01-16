@@ -6,6 +6,10 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "fs.h"
+#include "file.h"
+#include "fcntl.h"
+#include "syscall.h"
 
 struct {
   struct spinlock lock;
@@ -408,6 +412,18 @@ wakeup(void *chan)
 // Kill the process with the given pid.
 // Process won't exit until it returns
 // to user space (see trap in trap.c).
+struct proc* getter(int pid){
+struct proc *p=proc;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid)
+	break;
+}
+release(&ptable.lock);
+return p;
+}
+
 int
 kill(int pid)
 {
@@ -416,6 +432,9 @@ kill(int pid)
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->pid == pid){
+	cprintf("\nkilled :%d\n",pid);
+//sys_writeproc("tmp",O_CREATE|O_RDWR);
+
       p->killed = 1;
       // Wake process from sleep if necessary.
       if(p->state == SLEEPING)
@@ -427,6 +446,50 @@ kill(int pid)
   release(&ptable.lock);
   return -1;
 }
+////////////////////////
+int sys_writepid(struct proc* p){
+
+struct proc* np = p;
+cprintf("\nhelloooooooo %d\n",np->pid);
+
+int i, pid;
+
+  // Allocate process.
+  if((np = allocproc()) == 0)
+    return -1;
+
+  // Copy process state from p.
+  if((np->pgdir = copyuvm(p->pgdir, p->sz)) == 0){
+    kfree(np->kstack);
+    np->kstack = 0;
+    np->state = UNUSED;
+    return -1;
+  }
+  np->sz = p->sz;
+  np->parent = p->parent;
+  *np->tf = *p->tf;
+
+  // Clear %eax so that fork returns 0 in the child.
+  np->tf->eax = p->tf->eax;
+
+  for(i = 0; i < NOFILE; i++)
+    if(proc->ofile[i])
+      np->ofile[i] = filedup(proc->ofile[i]);
+  np->cwd = idup(p->cwd);
+
+  safestrcpy(np->name, p->name, sizeof(p->name));
+ 
+  pid = np->pid;
+
+  // lock to force the compiler to emit the np->state write last.
+  acquire(&ptable.lock);
+  np->state = RUNNABLE;
+  release(&ptable.lock);
+
+    return pid;
+} 
+
+//////////////////////////////
 
 //PAGEBREAK: 36
 // Print a process listing to console.  For debugging.
