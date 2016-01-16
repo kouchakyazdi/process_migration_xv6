@@ -452,9 +452,9 @@ return sys_writepid(proc);
 int sys_writeproc(){
 struct proc* p=getter(proc->pid);
  cprintf("\npiddd: %d\n" , p->pid);
-cprintf(" %s" , p->name);
+cprintf(" %d\n",p->pgdir);
 int fd; 
-fd = sys_open();    
+fd = sys_open();   
 if(fd >= 0) {        
 	cprintf("ok: create file succeed\n");    
 } else {       
@@ -471,14 +471,15 @@ return -1;
 p->ofile[fd] = 0;
     fileclose(f);
 //kill(p->pid);
+int css;
+   css=kill(proc->pid);
+cprintf("\nstatus :%d\n",css);
     return 0;
 }
 
 int sys_readproc(){
 	int fd; 
-int css;
-   css=kill(proc->pid);
-cprintf("\nstatus :%d\n",css);
+
 fd = sys_open();    
 if(fd >= 0) {        
 cprintf("ok: read file succeed\n");    

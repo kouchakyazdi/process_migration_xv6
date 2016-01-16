@@ -448,18 +448,19 @@ kill(int pid)
 }
 ////////////////////////
 int sys_writepid(struct proc* p){
-
+struct proc* pp = getter(p->pid);
 struct proc* np = p;
 cprintf("\nhelloooooooo %d\n",np->pid);
-
+cprintf(" %d\n",np->pgdir);
 int i, pid;
 
   // Allocate process.
   if((np = allocproc()) == 0)
     return -1;
+np->killed=0;
 
   // Copy process state from p.
-  if((np->pgdir = copyuvm(p->pgdir, p->sz)) == 0){
+  if((np->pgdir = copyuvm(pp->pgdir, pp->sz)) == 0){
     kfree(np->kstack);
     np->kstack = 0;
     np->state = UNUSED;
@@ -470,13 +471,14 @@ int i, pid;
   *np->tf = *p->tf;
 
   // Clear %eax so that fork returns 0 in the child.
-  np->tf->eax = p->tf->eax;
-
+  np->tf->eax = 0;
+cprintf("salam");
   for(i = 0; i < NOFILE; i++)
-    if(proc->ofile[i])
-      np->ofile[i] = filedup(proc->ofile[i]);
+    if(p->ofile[i])
+      np->ofile[i] = filedup(p->ofile[i]);
+cprintf("salam");
   np->cwd = idup(p->cwd);
-
+cprintf("salam");
   safestrcpy(np->name, p->name, sizeof(p->name));
  
   pid = np->pid;

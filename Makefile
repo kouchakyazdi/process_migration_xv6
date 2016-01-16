@@ -176,6 +176,8 @@ UPROGS=\
 	_filewrite\
 	_readfile\
 	_salam\
+	_newproc\
+	_oneproc\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

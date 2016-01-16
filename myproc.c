@@ -28,7 +28,7 @@ writeproc("tmp",O_CREATE|O_RDWR);
 			
 			
 
-readproc("tmp",O_RDONLY);	
+//readproc("tmp",O_RDONLY);	
 			
 		
 	    while(1){
