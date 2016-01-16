@@ -1,0 +1,17 @@
+///////////////files added///////////////
+myproc.c
+oneproc.c
+filewrite.c
+writefile.c
+salam.c
+//////////////files changed//////////////
+proc.c
+sysfile.c
+sysproc.c
+syscall.c
+usys.c
+defs.c
+user.h
+Makefile
+newproc.c
+
